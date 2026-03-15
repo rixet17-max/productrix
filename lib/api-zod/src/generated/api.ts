@@ -60,4 +60,14 @@ export const SearchProductResponse = zod.object({
     averagePrice: zod.string(),
   }),
   dataYear: zod.string().describe("Approximate year of data"),
+  headlines: zod
+    .array(
+      zod.object({
+        title: zod.string().describe("Headline title"),
+        summary: zod.string().describe("One-sentence summary of the news"),
+        source: zod.string().describe("Source name or publication"),
+        date: zod.string().describe("Approximate date or time period"),
+      }),
+    )
+    .describe("2-4 recent news headlines about this product"),
 });

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useSearchProduct } from "@workspace/api-client-react";
-import { Search, Factory, Truck, Ship, PackageOpen, Loader2, BarChart3, Box, DollarSign, Globe, Calendar } from "lucide-react";
+import { Search, Factory, Truck, Ship, PackageOpen, Loader2, BarChart3, Box, DollarSign, Globe, Calendar, Newspaper } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { StatCard } from "@/components/ui/stat-card";
 import { MatrixCard } from "@/components/ui/matrix-card";
@@ -207,6 +207,37 @@ export default function Home() {
                   Data Year: {searchMutation.data.dataYear}
                 </div>
               </div>
+
+              {/* Headlines Section */}
+              {searchMutation.data.headlines && searchMutation.data.headlines.length > 0 && (
+                <div className="bg-card border border-border/60 rounded-2xl overflow-hidden shadow-sm">
+                  <div className="flex items-center gap-3 px-6 py-4 border-b border-border/50 bg-slate-50 dark:bg-slate-900/40">
+                    <div className="w-9 h-9 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0">
+                      <Newspaper className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-foreground text-base">Latest Market Updates</h3>
+                      <p className="text-xs text-muted-foreground">Recent developments shaping this market</p>
+                    </div>
+                  </div>
+                  <div className="divide-y divide-border/40">
+                    {searchMutation.data.headlines.map((headline, idx) => (
+                      <div key={idx} className="px-6 py-4 hover:bg-slate-50/60 dark:hover:bg-slate-900/20 transition-colors">
+                        <div className="flex items-start justify-between gap-4">
+                          <div className="flex-1 min-w-0">
+                            <p className="font-semibold text-foreground text-sm leading-snug mb-1">{headline.title}</p>
+                            <p className="text-muted-foreground text-sm leading-relaxed">{headline.summary}</p>
+                          </div>
+                          <div className="shrink-0 text-right">
+                            <span className="inline-block text-xs font-medium text-primary bg-primary/8 px-2.5 py-1 rounded-full whitespace-nowrap">{headline.source}</span>
+                            <p className="text-xs text-muted-foreground mt-1.5 whitespace-nowrap">{headline.date}</p>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
 
               {/* Global Stats Grid */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">

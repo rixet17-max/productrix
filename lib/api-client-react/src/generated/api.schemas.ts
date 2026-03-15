@@ -39,6 +39,17 @@ export interface GlobalStats {
   averagePrice: string;
 }
 
+export interface Headline {
+  /** Headline title */
+  title: string;
+  /** One-sentence summary of the news */
+  summary: string;
+  /** Source name or publication */
+  source: string;
+  /** Approximate date or time period */
+  date: string;
+}
+
 export interface ProductSearchResult {
   productName: string;
   producers: Company[];
@@ -48,4 +59,6 @@ export interface ProductSearchResult {
   globalStats: GlobalStats;
   /** Approximate year of data */
   dataYear: string;
+  /** 2-4 recent news headlines about this product */
+  headlines: Headline[];
 }

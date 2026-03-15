@@ -8,6 +8,7 @@
 import type { Company } from "./company";
 import type { Country } from "./country";
 import type { GlobalStats } from "./globalStats";
+import type { Headline } from "./headline";
 
 export interface ProductSearchResult {
   productName: string;
@@ -18,4 +19,6 @@ export interface ProductSearchResult {
   globalStats: GlobalStats;
   /** Approximate year of data */
   dataYear: string;
+  /** 2-4 recent news headlines about this product */
+  headlines: Headline[];
 }

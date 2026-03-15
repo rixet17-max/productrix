@@ -125,6 +125,26 @@ components:
         - grossExportation
         - grossImportation
         - averagePrice
+    Headline:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Headline title
+        summary:
+          type: string
+          description: One-sentence summary of the news
+        source:
+          type: string
+          description: Source name or publication
+        date:
+          type: string
+          description: Approximate date or time period
+      required:
+        - title
+        - summary
+        - source
+        - date
     ProductSearchResult:
       type: object
       properties:
@@ -151,6 +171,11 @@ components:
         dataYear:
           type: string
           description: Approximate year of data
+        headlines:
+          type: array
+          description: 2-4 recent news headlines about this product
+          items:
+            $ref: "#/components/schemas/Headline"
       required:
         - productName
         - producers
@@ -159,3 +184,4 @@ components:
         - importingCountries
         - globalStats
         - dataYear
+        - headlines

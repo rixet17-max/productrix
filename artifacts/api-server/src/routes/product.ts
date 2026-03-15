@@ -9,7 +9,7 @@ router.post("/product/search", async (req, res) => {
     const body = SearchProductBody.parse(req.body);
     const { productName } = body;
 
-    const systemPrompt = `You are a global trade and market intelligence expert. When given a product name, you research and return accurate, comprehensive market intelligence data.
+    const systemPrompt = `You are a global trade and market intelligence expert. When given a product name, you research and return accurate, comprehensive market intelligence data including the latest news.
 
 You must return a JSON object with this exact structure:
 {
@@ -32,7 +32,15 @@ You must return a JSON object with this exact structure:
     "grossImportation": "<total global imports value with unit>",
     "averagePrice": "<average price per unit>"
   },
-  "dataYear": "<year or year range of the data, e.g. 2023 or 2022-2023>"
+  "dataYear": "<year or year range of the data, e.g. 2023 or 2022-2023>",
+  "headlines": [
+    {
+      "title": "<headline title summarizing a recent important development>",
+      "summary": "<one concise sentence explaining what happened and why it matters for this product's market>",
+      "source": "<name of a real publication or news outlet, e.g. Reuters, Bloomberg, Financial Times>",
+      "date": "<approximate date or period, e.g. March 2025 or Q1 2025>"
+    }
+  ]
 }
 
 Rules:
@@ -42,6 +50,8 @@ Rules:
 - For commodities, focus on commodity traders and trading companies as distributors
 - For manufactured goods, focus on wholesale distributors and major retailers
 - Always provide actual numeric values for the globalStats fields
+- Include exactly 2 to 4 headlines covering the most recent and impactful news for this product (supply chain shifts, price changes, new trade policies, major deals, production developments, etc.)
+- Headlines should reflect the most recent developments available in your knowledge, covering the period from 2024 to early 2026
 - Return ONLY the JSON object, no markdown, no explanation`;
 
     const userPrompt = `Research and provide comprehensive market intelligence for: ${productName}`;

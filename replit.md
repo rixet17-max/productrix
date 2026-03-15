@@ -16,6 +16,15 @@ pnpm workspace monorepo using TypeScript. Each package manages its own dependenc
 - **API codegen**: Orval (from OpenAPI spec)
 - **Build**: esbuild (CJS bundle)
 
+## Features
+
+### Product Market Matrix (`artifacts/product-matrix`)
+- Search any product by name and get a full market intelligence matrix
+- Shows: top producers, distributors, exporting countries, importing countries
+- Shows: global production, gross exports/imports, average price stats
+- Shows: 2-4 recent market news headlines with source and date
+- Powered by OpenAI gpt-5.2 via Replit AI Integrations
+
 ## Structure
 
 ```text

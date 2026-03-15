@@ -17,7 +17,7 @@ export function StatCard({ title, value, icon: Icon, delay = 0, className }: Sta
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay, duration: 0.5, ease: "easeOut" }}
       className={cn(
-        "bg-card border border-border/60 rounded-2xl p-6 shadow-lg shadow-black/5 relative overflow-hidden group hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300",
+        "bg-card border border-border/60 rounded-2xl p-6 shadow-lg shadow-black/5 relative overflow-hidden group hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 flex flex-col min-h-[150px]",
         className
       )}
     >

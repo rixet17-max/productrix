@@ -190,7 +190,7 @@ export default function Home() {
 
           {/* Success State */}
           {searchMutation.isSuccess && searchMutation.data && (
-            <div className="space-y-10 animate-in fade-in slide-in-from-bottom-8 duration-700">
+            <div className="space-y-10 animate-in fade-in slide-in-from-bottom-8 duration-700 fill-mode-both">
               {/* Report Header */}
               <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-border/50 pb-6">
                 <div>
@@ -209,33 +209,27 @@ export default function Home() {
               </div>
 
               {/* Headlines Section */}
-              {searchMutation.data.headlines && searchMutation.data.headlines.length > 0 && (
-                <div className="bg-card border border-border/60 rounded-2xl overflow-hidden shadow-sm">
-                  <div className="flex items-center gap-3 px-6 py-4 border-b border-border/50 bg-slate-50 dark:bg-slate-900/40">
-                    <div className="w-9 h-9 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0">
-                      <Newspaper className="w-5 h-5" />
-                    </div>
+              {Array.isArray(searchMutation.data.headlines) && searchMutation.data.headlines.length > 0 && (
+                <div style={{ border: "1px solid hsl(214 32% 85%)", borderRadius: "16px", background: "#fff", overflow: "hidden" }}>
+                  <div style={{ padding: "16px 24px", borderBottom: "1px solid hsl(214 32% 91%)", background: "hsl(210 40% 97%)", display: "flex", alignItems: "center", gap: "12px" }}>
+                    <Newspaper style={{ width: 20, height: 20, color: "hsl(221 83% 53%)", flexShrink: 0 }} />
                     <div>
-                      <h3 className="font-semibold text-foreground text-base">Latest Market Updates</h3>
-                      <p className="text-xs text-muted-foreground">Recent developments shaping this market</p>
+                      <p style={{ fontWeight: 700, fontSize: 15, color: "hsl(222 47% 11%)", margin: 0 }}>Latest Market Updates</p>
+                      <p style={{ fontSize: 12, color: "hsl(215 16% 47%)", margin: 0 }}>Recent news &amp; developments for this product</p>
                     </div>
                   </div>
-                  <div className="divide-y divide-border/40">
-                    {searchMutation.data.headlines.map((headline, idx) => (
-                      <div key={idx} className="px-6 py-4 hover:bg-slate-50/60 dark:hover:bg-slate-900/20 transition-colors">
-                        <div className="flex items-start justify-between gap-4">
-                          <div className="flex-1 min-w-0">
-                            <p className="font-semibold text-foreground text-sm leading-snug mb-1">{headline.title}</p>
-                            <p className="text-muted-foreground text-sm leading-relaxed">{headline.summary}</p>
-                          </div>
-                          <div className="shrink-0 text-right">
-                            <span className="inline-block text-xs font-medium text-primary bg-primary/8 px-2.5 py-1 rounded-full whitespace-nowrap">{headline.source}</span>
-                            <p className="text-xs text-muted-foreground mt-1.5 whitespace-nowrap">{headline.date}</p>
-                          </div>
-                        </div>
+                  {searchMutation.data.headlines.map((headline, idx) => (
+                    <div key={idx} style={{ padding: "14px 24px", borderBottom: idx < searchMutation.data!.headlines!.length - 1 ? "1px solid hsl(214 32% 93%)" : "none", display: "flex", gap: "16px", alignItems: "flex-start" }}>
+                      <div style={{ flex: 1, minWidth: 0 }}>
+                        <p style={{ fontWeight: 600, fontSize: 14, color: "hsl(222 47% 11%)", margin: "0 0 4px 0", lineHeight: 1.4 }}>{headline.title}</p>
+                        <p style={{ fontSize: 13, color: "hsl(215 16% 47%)", margin: 0, lineHeight: 1.5 }}>{headline.summary}</p>
                       </div>
-                    ))}
-                  </div>
+                      <div style={{ flexShrink: 0, textAlign: "right", minWidth: 90 }}>
+                        <span style={{ display: "inline-block", fontSize: 11, fontWeight: 600, color: "hsl(221 83% 53%)", background: "hsl(221 83% 95%)", padding: "3px 10px", borderRadius: 20 }}>{headline.source}</span>
+                        <p style={{ fontSize: 11, color: "hsl(215 16% 60%)", margin: "4px 0 0 0" }}>{headline.date}</p>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               )}
 

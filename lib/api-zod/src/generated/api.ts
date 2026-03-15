@@ -14,3 +14,50 @@ import * as zod from "zod";
 export const HealthCheckResponse = zod.object({
   status: zod.string(),
 });
+
+/**
+ * Returns producers, distributors, importing/exporting countries, and global stats for a product
+ * @summary Search product intelligence
+ */
+export const SearchProductBody = zod.object({
+  productName: zod.string().describe("Name of the product to research"),
+});
+
+export const SearchProductResponse = zod.object({
+  productName: zod.string(),
+  producers: zod.array(
+    zod.object({
+      name: zod.string(),
+      country: zod.string(),
+      description: zod.string(),
+    }),
+  ),
+  distributors: zod.array(
+    zod.object({
+      name: zod.string(),
+      country: zod.string(),
+      description: zod.string(),
+    }),
+  ),
+  exportingCountries: zod.array(
+    zod.object({
+      name: zod.string(),
+      value: zod.string().describe("Trade value or volume"),
+      percentage: zod.string().describe("Share of global trade"),
+    }),
+  ),
+  importingCountries: zod.array(
+    zod.object({
+      name: zod.string(),
+      value: zod.string().describe("Trade value or volume"),
+      percentage: zod.string().describe("Share of global trade"),
+    }),
+  ),
+  globalStats: zod.object({
+    globalProduction: zod.string(),
+    grossExportation: zod.string(),
+    grossImportation: zod.string(),
+    averagePrice: zod.string(),
+  }),
+  dataYear: zod.string().describe("Approximate year of data"),
+});

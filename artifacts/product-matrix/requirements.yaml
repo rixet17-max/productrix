@@ -1,0 +1,11 @@
+packages:
+  "framer-motion": "For page transitions, list staggers, and smooth layout animations"
+  "clsx": "For conditional tailwind class merging"
+  "tailwind-merge": "For conflict-free tailwind class merging"
+images:
+  - path: "artifacts/product-matrix/public/images/hero-bg.png"
+    description: "Abstract geometric data visualization background with subtle dots, connecting lines, and glowing nodes in deep slate and light blue, clean professional tech enterprise aesthetic, minimalist, high key lighting"
+    aspect_ratio: "16:9"
+notes:
+  - "Using useSearchProduct from @workspace/api-client-react for the main mutation"
+  - "The Search API expects { data: { productName } }"

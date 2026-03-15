@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "Product Market Matrix"
+version = "1.0.0"
+id = "artifacts/product-matrix"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+localPort = 23635
+name = "web"
+paths = ["/"]
+
+[services.development]
+run = "pnpm --filter @workspace/product-matrix run dev"
+
+[services.env]
+PORT = "23635"
+BASE_PATH = "/"
+
+[services.production]
+build = ["pnpm", "--filter", "@workspace/product-matrix", "run", "build"]
+publicDir = "artifacts/product-matrix/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"

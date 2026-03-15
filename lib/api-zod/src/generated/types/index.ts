@@ -6,4 +6,10 @@
  * OpenAPI spec version: 0.1.0
  */
 
+export * from "./company";
+export * from "./country";
+export * from "./errorResponse";
+export * from "./globalStats";
 export * from "./healthStatus";
+export * from "./productSearchRequest";
+export * from "./productSearchResult";

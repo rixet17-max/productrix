@@ -10,6 +10,8 @@ servers:
 tags:
   - name: health
     description: Health operations
+  - name: product
+    description: Product intelligence operations
 paths:
   /healthz:
     get:
@@ -24,6 +26,37 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+  /product/search:
+    post:
+      operationId: searchProduct
+      tags: [product]
+      summary: Search product intelligence
+      description: Returns producers, distributors, importing/exporting countries, and global stats for a product
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProductSearchRequest"
+      responses:
+        "200":
+          description: Product intelligence matrix
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductSearchResult"
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 components:
   schemas:
     HealthStatus:
@@ -33,4 +66,96 @@ components:
           type: string
       required:
         - status
-
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+        - error
+    ProductSearchRequest:
+      type: object
+      properties:
+        productName:
+          type: string
+          description: Name of the product to research
+      required:
+        - productName
+    Company:
+      type: object
+      properties:
+        name:
+          type: string
+        country:
+          type: string
+        description:
+          type: string
+      required:
+        - name
+        - country
+        - description
+    Country:
+      type: object
+      properties:
+        name:
+          type: string
+        value:
+          type: string
+          description: Trade value or volume
+        percentage:
+          type: string
+          description: Share of global trade
+      required:
+        - name
+        - value
+        - percentage
+    GlobalStats:
+      type: object
+      properties:
+        globalProduction:
+          type: string
+        grossExportation:
+          type: string
+        grossImportation:
+          type: string
+        averagePrice:
+          type: string
+      required:
+        - globalProduction
+        - grossExportation
+        - grossImportation
+        - averagePrice
+    ProductSearchResult:
+      type: object
+      properties:
+        productName:
+          type: string
+        producers:
+          type: array
+          items:
+            $ref: "#/components/schemas/Company"
+        distributors:
+          type: array
+          items:
+            $ref: "#/components/schemas/Company"
+        exportingCountries:
+          type: array
+          items:
+            $ref: "#/components/schemas/Country"
+        importingCountries:
+          type: array
+          items:
+            $ref: "#/components/schemas/Country"
+        globalStats:
+          $ref: "#/components/schemas/GlobalStats"
+        dataYear:
+          type: string
+          description: Approximate year of data
+      required:
+        - productName
+        - producers
+        - distributors
+        - exportingCountries
+        - importingCountries
+        - globalStats
+        - dataYear

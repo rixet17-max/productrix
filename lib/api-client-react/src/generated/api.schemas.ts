@@ -8,3 +8,44 @@
 export interface HealthStatus {
   status: string;
 }
+
+export interface ErrorResponse {
+  error: string;
+}
+
+export interface ProductSearchRequest {
+  /** Name of the product to research */
+  productName: string;
+}
+
+export interface Company {
+  name: string;
+  country: string;
+  description: string;
+}
+
+export interface Country {
+  name: string;
+  /** Trade value or volume */
+  value: string;
+  /** Share of global trade */
+  percentage: string;
+}
+
+export interface GlobalStats {
+  globalProduction: string;
+  grossExportation: string;
+  grossImportation: string;
+  averagePrice: string;
+}
+
+export interface ProductSearchResult {
+  productName: string;
+  producers: Company[];
+  distributors: Company[];
+  exportingCountries: Country[];
+  importingCountries: Country[];
+  globalStats: GlobalStats;
+  /** Approximate year of data */
+  dataYear: string;
+}

@@ -5,18 +5,26 @@
  * API specification
  * OpenAPI spec version: 0.1.0
  */
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import type {
+  MutationFunction,
   QueryFunction,
   QueryKey,
+  UseMutationOptions,
+  UseMutationResult,
   UseQueryOptions,
   UseQueryResult,
 } from "@tanstack/react-query";
 
-import type { HealthStatus } from "./api.schemas";
+import type {
+  ErrorResponse,
+  HealthStatus,
+  ProductSearchRequest,
+  ProductSearchResult,
+} from "./api.schemas";
 
 import { customFetch } from "../custom-fetch";
-import type { ErrorType } from "../custom-fetch";
+import type { ErrorType, BodyType } from "../custom-fetch";
 
 type AwaitedInput<T> = PromiseLike<T> | T;
 
@@ -99,3 +107,90 @@ export function useHealthCheck<
 
   return { ...query, queryKey: queryOptions.queryKey };
 }
+
+/**
+ * Returns producers, distributors, importing/exporting countries, and global stats for a product
+ * @summary Search product intelligence
+ */
+export const getSearchProductUrl = () => {
+  return `/api/product/search`;
+};
+
+export const searchProduct = async (
+  productSearchRequest: ProductSearchRequest,
+  options?: RequestInit,
+): Promise<ProductSearchResult> => {
+  return customFetch<ProductSearchResult>(getSearchProductUrl(), {
+    ...options,
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(productSearchRequest),
+  });
+};
+
+export const getSearchProductMutationOptions = <
+  TError = ErrorType<ErrorResponse>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof searchProduct>>,
+    TError,
+    { data: BodyType<ProductSearchRequest> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof searchProduct>>,
+  TError,
+  { data: BodyType<ProductSearchRequest> },
+  TContext
+> => {
+  const mutationKey = ["searchProduct"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof searchProduct>>,
+    { data: BodyType<ProductSearchRequest> }
+  > = (props) => {
+    const { data } = props ?? {};
+
+    return searchProduct(data, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type SearchProductMutationResult = NonNullable<
+  Awaited<ReturnType<typeof searchProduct>>
+>;
+export type SearchProductMutationBody = BodyType<ProductSearchRequest>;
+export type SearchProductMutationError = ErrorType<ErrorResponse>;
+
+/**
+ * @summary Search product intelligence
+ */
+export const useSearchProduct = <
+  TError = ErrorType<ErrorResponse>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof searchProduct>>,
+    TError,
+    { data: BodyType<ProductSearchRequest> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof searchProduct>>,
+  TError,
+  { data: BodyType<ProductSearchRequest> },
+  TContext
+> => {
+  return useMutation(getSearchProductMutationOptions(options));
+};

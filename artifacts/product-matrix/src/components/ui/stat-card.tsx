@@ -29,7 +29,7 @@ export function StatCard({ title, value, icon: Icon, delay = 0, className }: Sta
           </div>
           <h4 className="text-2xl md:text-3xl font-display font-bold text-foreground tracking-tight">{value}</h4>
         </div>
-        <p className="text-xs font-medium text-muted-foreground leading-tight text-center mt-3">{title}</p>
+        <p className="text-[10px] font-medium text-muted-foreground leading-tight text-center mt-3">{title}</p>
       </div>
     </motion.div>
   );

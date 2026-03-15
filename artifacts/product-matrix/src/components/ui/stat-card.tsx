@@ -24,7 +24,7 @@ export function StatCard({ title, value, icon: Icon, delay = 0, className }: Sta
       <div className="absolute top-0 right-0 -mt-6 -mr-6 w-32 h-32 bg-primary/5 rounded-full blur-2xl group-hover:bg-primary/10 transition-colors duration-500" />
       <div className="relative z-10 flex flex-col justify-between h-full gap-4">
         <div className="flex items-start justify-between">
-          <p className="text-sm font-medium text-muted-foreground">{title}</p>
+          <p className="text-xs font-medium text-muted-foreground leading-tight">{title}</p>
           <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0">
             <Icon className="w-5 h-5" />
           </div>

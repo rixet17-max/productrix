@@ -50,7 +50,7 @@ Rules:
 - For commodities, focus on commodity traders and trading companies as distributors
 - For manufactured goods, focus on wholesale distributors and major retailers
 - Always provide actual numeric values for the globalStats fields
-- Include exactly 2 to 4 headlines covering the most recent and impactful news for this product (supply chain shifts, price changes, new trade policies, major deals, production developments, etc.)
+- Include exactly 4 headlines covering the most recent and impactful news for this product (supply chain shifts, price changes, new trade policies, major deals, production developments, etc.)
 - Headlines should reflect the most recent developments available in your knowledge, covering the period from 2024 to early 2026
 - Return ONLY the JSON object, no markdown, no explanation`;
 

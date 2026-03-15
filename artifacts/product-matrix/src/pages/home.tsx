@@ -1,9 +1,44 @@
 import { useState } from "react";
 import { useSearchProduct } from "@workspace/api-client-react";
-import { Search, Factory, Truck, Ship, PackageOpen, Loader2, BarChart3, Box, DollarSign, Globe, Calendar, Newspaper } from "lucide-react";
+import { Search, Factory, Truck, Ship, PackageOpen, Loader2, BarChart3, Box, DollarSign, Globe, Calendar, Newspaper, ExternalLink } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { StatCard } from "@/components/ui/stat-card";
 import { MatrixCard } from "@/components/ui/matrix-card";
+
+function HeadlineItem({ title, summary, source, date }: { title: string; summary: string; source: string; date: string }) {
+  const [hovered, setHovered] = useState(false);
+  const searchUrl = `https://news.google.com/search?q=${encodeURIComponent(title)}`;
+  return (
+    <div
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{ padding: "10px 20px", borderBottom: "1px solid hsl(214 32% 93%)", cursor: "pointer", transition: "background 0.15s", background: hovered ? "hsl(210 40% 97%)" : "transparent" }}
+    >
+      <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+        <a
+          href={searchUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={e => e.stopPropagation()}
+          style={{ flex: 1, minWidth: 0, fontWeight: 600, fontSize: 13, color: "hsl(222 47% 11%)", textDecoration: "none", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", display: "block" }}
+          title={title}
+        >
+          {title}
+        </a>
+        <div style={{ display: "flex", alignItems: "center", gap: "6px", flexShrink: 0 }}>
+          <span style={{ fontSize: 11, fontWeight: 600, color: "hsl(221 83% 53%)", background: "hsl(221 83% 95%)", padding: "2px 8px", borderRadius: 20, whiteSpace: "nowrap" }}>{source}</span>
+          <span style={{ fontSize: 11, color: "hsl(215 16% 60%)", whiteSpace: "nowrap" }}>{date}</span>
+          <ExternalLink style={{ width: 11, height: 11, color: "hsl(215 16% 70%)", flexShrink: 0 }} />
+        </div>
+      </div>
+      {hovered && (
+        <p style={{ margin: "6px 0 0 0", fontSize: 12, color: "hsl(215 16% 47%)", lineHeight: 1.5, display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
+          {summary}
+        </p>
+      )}
+    </div>
+  );
+}
 
 export default function Home() {
   const [query, setQuery] = useState("");
@@ -210,24 +245,20 @@ export default function Home() {
 
               {/* Headlines Section */}
               {Array.isArray(searchMutation.data.headlines) && searchMutation.data.headlines.length > 0 && (
-                <div style={{ border: "1px solid hsl(214 32% 85%)", borderRadius: "16px", background: "#fff", overflow: "hidden" }}>
-                  <div style={{ padding: "16px 24px", borderBottom: "1px solid hsl(214 32% 91%)", background: "hsl(210 40% 97%)", display: "flex", alignItems: "center", gap: "12px" }}>
-                    <Newspaper style={{ width: 20, height: 20, color: "hsl(221 83% 53%)", flexShrink: 0 }} />
-                    <div>
-                      <p style={{ fontWeight: 700, fontSize: 15, color: "hsl(222 47% 11%)", margin: 0 }}>Latest Market Updates</p>
-                      <p style={{ fontSize: 12, color: "hsl(215 16% 47%)", margin: 0 }}>Recent news &amp; developments for this product</p>
-                    </div>
+                <div style={{ border: "1px solid hsl(214 32% 85%)", borderRadius: "14px", background: "#fff", overflow: "hidden" }}>
+                  <div style={{ padding: "10px 20px", borderBottom: "1px solid hsl(214 32% 91%)", background: "hsl(210 40% 97%)", display: "flex", alignItems: "center", gap: "8px" }}>
+                    <Newspaper style={{ width: 15, height: 15, color: "hsl(221 83% 53%)", flexShrink: 0 }} />
+                    <p style={{ fontWeight: 700, fontSize: 13, color: "hsl(222 47% 11%)", margin: 0 }}>Latest Market Updates</p>
+                    <p style={{ fontSize: 11, color: "hsl(215 16% 60%)", margin: 0, marginLeft: 4 }}>— hover a headline for context</p>
                   </div>
-                  {searchMutation.data.headlines.map((headline, idx) => (
-                    <div key={idx} style={{ padding: "14px 24px", borderBottom: idx < searchMutation.data!.headlines!.length - 1 ? "1px solid hsl(214 32% 93%)" : "none", display: "flex", gap: "16px", alignItems: "flex-start" }}>
-                      <div style={{ flex: 1, minWidth: 0 }}>
-                        <p style={{ fontWeight: 600, fontSize: 14, color: "hsl(222 47% 11%)", margin: "0 0 4px 0", lineHeight: 1.4 }}>{headline.title}</p>
-                        <p style={{ fontSize: 13, color: "hsl(215 16% 47%)", margin: 0, lineHeight: 1.5 }}>{headline.summary}</p>
-                      </div>
-                      <div style={{ flexShrink: 0, textAlign: "right", minWidth: 90 }}>
-                        <span style={{ display: "inline-block", fontSize: 11, fontWeight: 600, color: "hsl(221 83% 53%)", background: "hsl(221 83% 95%)", padding: "3px 10px", borderRadius: 20 }}>{headline.source}</span>
-                        <p style={{ fontSize: 11, color: "hsl(215 16% 60%)", margin: "4px 0 0 0" }}>{headline.date}</p>
-                      </div>
+                  {searchMutation.data.headlines.slice(0, 4).map((headline, idx, arr) => (
+                    <div key={idx} style={{ borderBottom: idx < arr.length - 1 ? "1px solid hsl(214 32% 93%)" : "none" }}>
+                      <HeadlineItem
+                        title={headline.title}
+                        summary={headline.summary}
+                        source={headline.source}
+                        date={headline.date}
+                      />
                     </div>
                   ))}
                 </div>

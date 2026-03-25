@@ -65,7 +65,7 @@ export default function Home() {
         "transition-all duration-700 ease-in-out w-full flex justify-center items-center shrink-0",
         hasSearched 
           ? "py-4 border-b border-border/60 bg-card/80 backdrop-blur-xl sticky top-0 z-50 shadow-sm"
-          : "h-screen flex-col relative overflow-hidden"
+          : "py-20 flex-col relative overflow-hidden"
       )}>
         {/* Hero Background */}
         {!hasSearched && (

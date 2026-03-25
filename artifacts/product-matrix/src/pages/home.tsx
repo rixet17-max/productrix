@@ -317,18 +317,18 @@ export default function Home() {
                     Data Year: {searchMutation.data.dataYear}
                   </div>
                   <button
-                    onClick={() => exportToPDF(searchMutation.data!)}
-                    className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-50 border border-red-200 text-red-700 text-sm font-semibold hover:bg-red-100 transition-colors"
-                  >
-                    <FileDown className="w-4 h-4" />
-                    Export PDF
-                  </button>
-                  <button
                     onClick={() => void exportToExcel(searchMutation.data!)}
                     className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-50 border border-green-200 text-green-700 text-sm font-semibold hover:bg-green-100 transition-colors"
                   >
                     <FileSpreadsheet className="w-4 h-4" />
                     Export Excel
+                  </button>
+                  <button
+                    onClick={() => exportToPDF(searchMutation.data!)}
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-50 border border-red-200 text-red-700 text-sm font-semibold hover:bg-red-100 transition-colors"
+                  >
+                    <FileDown className="w-4 h-4" />
+                    Export PDF
                   </button>
                 </div>
               </div>

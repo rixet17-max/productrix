@@ -324,7 +324,7 @@ export default function Home() {
                     Export PDF
                   </button>
                   <button
-                    onClick={() => exportToExcel(searchMutation.data!)}
+                    onClick={() => void exportToExcel(searchMutation.data!)}
                     className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-50 border border-green-200 text-green-700 text-sm font-semibold hover:bg-green-100 transition-colors"
                   >
                     <FileSpreadsheet className="w-4 h-4" />

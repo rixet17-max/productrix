@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSearchProduct } from "@workspace/api-client-react";
 import { Search, Factory, Truck, Ship, PackageOpen, Loader2, BarChart3, Box, DollarSign, Globe, Calendar, Newspaper, ExternalLink, FileDown, FileSpreadsheet } from "lucide-react";
 import { exportToPDF, exportToExcel } from "@/lib/export";
@@ -37,6 +37,91 @@ function HeadlineItem({ title, summary, source, date }: { title: string; summary
           {summary}
         </p>
       )}
+    </div>
+  );
+}
+
+const LOADING_MESSAGES = [
+  "Identificando productores globales...",
+  "Analizando flujos de exportación e importación...",
+  "Recopilando datos de distribuidores clave...",
+  "Calculando estadísticas de mercado global...",
+  "Buscando las últimas noticias del sector...",
+  "Organizando la información por país...",
+  "Preparando tu reporte de inteligencia...",
+];
+
+function SearchLoader({ product }: { product: string }) {
+  const [msgIdx, setMsgIdx] = useState(0);
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    const msgTimer = setInterval(() => {
+      setMsgIdx(i => (i + 1) % LOADING_MESSAGES.length);
+    }, 2200);
+    return () => clearInterval(msgTimer);
+  }, []);
+
+  useEffect(() => {
+    setProgress(0);
+    const start = Date.now();
+    const duration = 18000;
+    const frame = () => {
+      const elapsed = Date.now() - start;
+      const pct = Math.min(92, (elapsed / duration) * 92);
+      setProgress(pct);
+      if (pct < 92) requestAnimationFrame(frame);
+    };
+    requestAnimationFrame(frame);
+  }, []);
+
+  const radius = 54;
+  const circumference = 2 * Math.PI * radius;
+  const strokeDash = (progress / 100) * circumference;
+
+  return (
+    <div className="flex flex-col items-center justify-center py-24 gap-8 animate-in fade-in duration-500">
+      <div className="relative w-36 h-36">
+        <svg className="w-full h-full -rotate-90" viewBox="0 0 128 128">
+          <circle cx="64" cy="64" r={radius} fill="none" stroke="hsl(142 76% 90%)" strokeWidth="10" />
+          <circle
+            cx="64" cy="64" r={radius}
+            fill="none"
+            stroke="hsl(142 76% 36%)"
+            strokeWidth="10"
+            strokeLinecap="round"
+            strokeDasharray={`${strokeDash} ${circumference}`}
+            style={{ transition: "stroke-dasharray 0.4s ease-out" }}
+          />
+        </svg>
+        <div className="absolute inset-0 flex flex-col items-center justify-center">
+          <span className="text-2xl font-bold text-green-600">{Math.round(progress)}%</span>
+        </div>
+      </div>
+
+      <div className="text-center space-y-2 max-w-sm">
+        <p className="text-lg font-semibold text-foreground">Analizando: <span className="text-primary capitalize">{product}</span></p>
+        <p
+          key={msgIdx}
+          className="text-sm text-muted-foreground animate-in fade-in slide-in-from-bottom-2 duration-500"
+        >
+          {LOADING_MESSAGES[msgIdx]}
+        </p>
+        <p className="text-xs text-muted-foreground/60 mt-2">Esto puede tardar unos segundos — la IA está recopilando datos de comercio global en tiempo real.</p>
+      </div>
+
+      <div className="flex gap-1.5 mt-2">
+        {LOADING_MESSAGES.map((_, i) => (
+          <div
+            key={i}
+            className="h-1.5 rounded-full transition-all duration-500"
+            style={{
+              width: i === msgIdx ? 24 : 6,
+              background: i === msgIdx ? "hsl(142 76% 36%)" : "hsl(142 76% 80%)",
+            }}
+          />
+        ))}
+      </div>
     </div>
   );
 }
@@ -240,43 +325,7 @@ export default function Home() {
         <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 overflow-x-hidden">
           
           {/* Loading State */}
-          {searchMutation.isPending && (
-            <div className="space-y-10 animate-in fade-in duration-500">
-              <div className="flex flex-col md:flex-row justify-between gap-4 border-b border-border/50 pb-6">
-                <div>
-                  <div className="h-10 w-72 bg-slate-200 dark:bg-slate-800 animate-pulse rounded-xl" />
-                  <div className="h-5 w-48 bg-slate-100 dark:bg-slate-800/50 animate-pulse rounded-lg mt-3" />
-                </div>
-                <div className="h-8 w-32 bg-slate-200 dark:bg-slate-800 animate-pulse rounded-full" />
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                {[1, 2, 3, 4].map(i => (
-                  <div key={i} className="h-36 bg-card border border-border/50 rounded-2xl animate-pulse" />
-                ))}
-              </div>
-
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                {[1, 2, 3, 4].map(i => (
-                  <div key={i} className="h-[420px] bg-card border border-border/50 rounded-2xl flex flex-col overflow-hidden">
-                    <div className="h-16 border-b border-border/50 bg-slate-50 dark:bg-slate-900/50 animate-pulse" />
-                    <div className="p-6 space-y-6">
-                      {[1, 2, 3].map(j => (
-                        <div key={j} className="flex gap-4">
-                          <div className="w-10 h-10 bg-slate-200 dark:bg-slate-800 rounded-full animate-pulse shrink-0" />
-                          <div className="flex-1 space-y-3">
-                            <div className="h-4 w-1/3 bg-slate-200 dark:bg-slate-800 rounded animate-pulse" />
-                            <div className="h-3 w-1/4 bg-slate-100 dark:bg-slate-800/50 rounded animate-pulse" />
-                            <div className="h-3 w-full bg-slate-100 dark:bg-slate-800/50 rounded animate-pulse mt-2" />
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
+          {searchMutation.isPending && <SearchLoader product={query} />}
 
           {/* Error State */}
           {searchMutation.isError && (

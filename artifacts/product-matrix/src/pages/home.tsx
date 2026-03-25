@@ -161,6 +161,79 @@ export default function Home() {
         </div>
       </header>
 
+      {/* Static SEO Content — shown only on landing page */}
+      {!hasSearched && (
+        <main className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-20 space-y-16">
+
+          {/* How it works */}
+          <section>
+            <h2 className="text-2xl font-bold text-center text-foreground mb-8">How ProductMatrix Works</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {[
+                { step: "1", title: "Enter Any Product", desc: "Type the name of any commodity, manufactured good, or raw material — from Lithium and Coffee to Semiconductors and Steel." },
+                { step: "2", title: "AI-Powered Research", desc: "Our engine instantly queries global trade databases and market intelligence sources to compile a full supply chain profile." },
+                { step: "3", title: "Get Your Intelligence Report", desc: "Receive a structured matrix of top producers, distributors, exporting and importing countries, global stats, and the latest market headlines." },
+              ].map(({ step, title, desc }) => (
+                <div key={step} className="bg-card border border-border/60 rounded-2xl p-6 text-center shadow-sm">
+                  <div className="w-10 h-10 rounded-full bg-primary/10 text-primary font-bold text-lg flex items-center justify-center mx-auto mb-4">{step}</div>
+                  <h3 className="font-semibold text-foreground mb-2">{title}</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">{desc}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* Features */}
+          <section>
+            <h2 className="text-2xl font-bold text-center text-foreground mb-8">What You Get With Every Search</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {[
+                { title: "Top Global Producers", desc: "Identify the world's leading companies manufacturing or growing each product, with country of origin and scale of operations." },
+                { title: "Key Distributors & Traders", desc: "Discover major commodity traders, wholesalers, and distribution networks that move the product across global markets." },
+                { title: "Export & Import Countries", desc: "See which countries dominate global exports and imports, with trade values and percentage share of world trade." },
+                { title: "Global Market Stats", desc: "Instantly access global production volumes, total export and import values, and average market prices per unit." },
+                { title: "Latest Market Headlines", desc: "Stay informed with 4 recent news headlines covering price movements, supply chain shifts, trade policy changes, and major market developments." },
+                { title: "Data Year Reference", desc: "Every report includes the year of the underlying data so you always know how current the intelligence is." },
+              ].map(({ title, desc }) => (
+                <div key={title} className="bg-card border border-border/60 rounded-xl p-5 shadow-sm flex gap-4">
+                  <div className="w-2 h-2 rounded-full bg-primary mt-2 shrink-0" />
+                  <div>
+                    <h3 className="font-semibold text-foreground text-sm mb-1">{title}</h3>
+                    <p className="text-xs text-muted-foreground leading-relaxed">{desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* FAQ */}
+          <section>
+            <h2 className="text-2xl font-bold text-center text-foreground mb-8">Frequently Asked Questions</h2>
+            <div className="space-y-4">
+              {[
+                { q: "What types of products can I search for?", a: "You can search for virtually any traded product — agricultural commodities like coffee, wheat, and cocoa; metals and minerals like lithium, copper, and iron ore; manufactured goods like semiconductors, electric vehicles, and pharmaceuticals; and industrial materials like timber, plastics, and chemicals." },
+                { q: "Where does the market intelligence data come from?", a: "ProductMatrix uses advanced AI trained on global trade databases, international commerce reports, UN Comtrade data, World Bank statistics, and industry publications to generate comprehensive market profiles for each product." },
+                { q: "How current is the data?", a: "Each report displays the data year so you know how recent the figures are. Our AI draws on knowledge through early 2026 and clearly labels the reference year for every data point." },
+                { q: "Who is ProductMatrix designed for?", a: "ProductMatrix is built for supply chain managers, trade analysts, commodity traders, market researchers, business students, journalists, and anyone who needs fast access to global product intelligence without hours of manual research." },
+                { q: "Is ProductMatrix free to use?", a: "Yes — ProductMatrix is free to use. Simply enter any product name and receive your full market intelligence report instantly." },
+                { q: "Can I use this data for business decisions?", a: "ProductMatrix provides a strong starting point for market research and due diligence. For critical business decisions, we recommend validating key figures with primary sources such as national trade statistics agencies, UN Comtrade, or industry-specific reports." },
+              ].map(({ q, a }) => (
+                <div key={q} className="bg-card border border-border/60 rounded-xl p-5 shadow-sm">
+                  <h3 className="font-semibold text-foreground text-sm mb-2">{q}</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">{a}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* Footer note */}
+          <section className="text-center text-xs text-muted-foreground border-t border-border/50 pt-8">
+            <p>ProductMatrix — Global Product Market Intelligence. Data sourced from international trade databases and AI-powered market research. For informational purposes only.</p>
+          </section>
+
+        </main>
+      )}
+
       {/* Main Content Area */}
       {hasSearched && (
         <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 overflow-x-hidden">

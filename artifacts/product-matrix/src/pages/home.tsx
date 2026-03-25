@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useSearchProduct } from "@workspace/api-client-react";
-import { Search, Factory, Truck, Ship, PackageOpen, Loader2, BarChart3, Box, DollarSign, Globe, Calendar, Newspaper, ExternalLink } from "lucide-react";
+import { Search, Factory, Truck, Ship, PackageOpen, Loader2, BarChart3, Box, DollarSign, Globe, Calendar, Newspaper, ExternalLink, FileDown, FileSpreadsheet } from "lucide-react";
+import { exportToPDF, exportToExcel } from "@/lib/export";
 import { cn } from "@/lib/utils";
 import { StatCard } from "@/components/ui/stat-card";
 import { MatrixCard } from "@/components/ui/matrix-card";
@@ -310,9 +311,25 @@ export default function Home() {
                     Global Market Intelligence Report
                   </p>
                 </div>
-                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-sm font-semibold border border-border">
-                  <Calendar className="w-4 h-4" />
-                  Data Year: {searchMutation.data.dataYear}
+                <div className="flex items-center gap-3 flex-wrap">
+                  <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-sm font-semibold border border-border">
+                    <Calendar className="w-4 h-4" />
+                    Data Year: {searchMutation.data.dataYear}
+                  </div>
+                  <button
+                    onClick={() => exportToPDF(searchMutation.data!)}
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-50 border border-red-200 text-red-700 text-sm font-semibold hover:bg-red-100 transition-colors"
+                  >
+                    <FileDown className="w-4 h-4" />
+                    Export PDF
+                  </button>
+                  <button
+                    onClick={() => exportToExcel(searchMutation.data!)}
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-50 border border-green-200 text-green-700 text-sm font-semibold hover:bg-green-100 transition-colors"
+                  >
+                    <FileSpreadsheet className="w-4 h-4" />
+                    Export Excel
+                  </button>
                 </div>
               </div>
 

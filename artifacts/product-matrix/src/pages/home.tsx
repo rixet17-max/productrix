@@ -1,10 +1,56 @@
 import { useState, useEffect } from "react";
 import { useSearchProduct } from "@workspace/api-client-react";
-import { Search, Factory, Truck, Ship, PackageOpen, Loader2, BarChart3, Box, DollarSign, Globe, Calendar, Newspaper, ExternalLink, FileDown, FileSpreadsheet } from "lucide-react";
+import { Search, Factory, Truck, Ship, PackageOpen, Loader2, BarChart3, Box, DollarSign, Globe, Calendar, Newspaper, ExternalLink, FileDown, FileSpreadsheet, ChevronDown, BookOpen, Link } from "lucide-react";
 import { exportToPDF, exportToExcel } from "@/lib/export";
 import { cn } from "@/lib/utils";
 import { StatCard } from "@/components/ui/stat-card";
 import { MatrixCard } from "@/components/ui/matrix-card";
+
+function SourcesPanel({ sources }: { sources: { name: string; url: string; description: string }[] }) {
+  const [open, setOpen] = useState(false);
+  if (!sources || sources.length === 0) return null;
+  return (
+    <div style={{ border: "1px solid hsl(214 32% 85%)", borderRadius: 14, background: "#fff", overflow: "hidden" }}>
+      <button
+        onClick={() => setOpen(o => !o)}
+        style={{
+          width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between",
+          padding: "12px 20px", background: open ? "hsl(221 83% 97%)" : "#fff",
+          border: "none", cursor: "pointer", transition: "background 0.2s",
+        }}
+      >
+        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+          <BookOpen style={{ width: 15, height: 15, color: "hsl(221 83% 53%)" }} />
+          <span style={{ fontWeight: 700, fontSize: 13, color: "hsl(222 47% 11%)" }}>Ver Fuentes</span>
+          <span style={{ fontSize: 11, color: "hsl(215 16% 60%)", marginLeft: 2 }}>— {sources.length} fuentes de referencia</span>
+        </div>
+        <ChevronDown style={{ width: 16, height: 16, color: "hsl(215 16% 60%)", transform: open ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.25s" }} />
+      </button>
+      {open && (
+        <div style={{ borderTop: "1px solid hsl(214 32% 91%)" }}>
+          {sources.map((s, i) => (
+            <div key={i} style={{ padding: "10px 20px", borderBottom: i < sources.length - 1 ? "1px solid hsl(214 32% 93%)" : "none", display: "flex", alignItems: "flex-start", gap: 12 }}>
+              <Link style={{ width: 14, height: 14, color: "hsl(221 83% 53%)", marginTop: 2, flexShrink: 0 }} />
+              <div style={{ flex: 1 }}>
+                <a
+                  href={s.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ fontWeight: 600, fontSize: 13, color: "hsl(221 83% 45%)", textDecoration: "none" }}
+                  onMouseEnter={e => (e.currentTarget.style.textDecoration = "underline")}
+                  onMouseLeave={e => (e.currentTarget.style.textDecoration = "none")}
+                >
+                  {s.name} <ExternalLink style={{ width: 10, height: 10, display: "inline", marginLeft: 3 }} />
+                </a>
+                <p style={{ margin: "2px 0 0 0", fontSize: 12, color: "hsl(215 16% 50%)", lineHeight: 1.5 }}>{s.description}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
 
 function HeadlineItem({ title, summary, source, date }: { title: string; summary: string; source: string; date: string }) {
   const [hovered, setHovered] = useState(false);
@@ -462,6 +508,11 @@ export default function Home() {
                   delay={0.5} 
                 />
               </div>
+
+              {/* Sources Panel */}
+              {Array.isArray(searchMutation.data.sources) && searchMutation.data.sources.length > 0 && (
+                <SourcesPanel sources={searchMutation.data.sources} />
+              )}
             </div>
           )}
         </main>

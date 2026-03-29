@@ -50,6 +50,15 @@ export interface Headline {
   date: string;
 }
 
+export interface Source {
+  /** Source or organization name */
+  name: string;
+  /** URL to the source */
+  url: string;
+  /** Brief description of what this source covers */
+  description: string;
+}
+
 export interface ProductSearchResult {
   productName: string;
   producers: Company[];
@@ -61,4 +70,6 @@ export interface ProductSearchResult {
   dataYear: string;
   /** 2-4 recent news headlines about this product */
   headlines: Headline[];
+  /** Reference sources used for this report */
+  sources: Source[];
 }

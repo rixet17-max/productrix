@@ -70,4 +70,13 @@ export const SearchProductResponse = zod.object({
       }),
     )
     .describe("2-4 recent news headlines about this product"),
+  sources: zod
+    .array(
+      zod.object({
+        name: zod.string().describe("Source or organization name"),
+        url: zod.string().describe("URL to the source"),
+        description: zod.string().describe("Brief description of what this source covers"),
+      }),
+    )
+    .describe("Reference sources used for this report"),
 });

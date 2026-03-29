@@ -1,17 +1,44 @@
 import { Router, type IRouter } from "express";
 import { SearchProductBody, SearchProductResponse } from "@workspace/api-zod";
+import { pool } from "@workspace/db";
 import Groq from "groq-sdk";
 
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
 const router: IRouter = Router();
 
+async function ensureCacheTable() {
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS product_cache (
+      id SERIAL PRIMARY KEY,
+      product_key TEXT UNIQUE NOT NULL,
+      data JSONB NOT NULL,
+      created_at TIMESTAMPTZ DEFAULT NOW(),
+      updated_at TIMESTAMPTZ DEFAULT NOW()
+    )
+  `);
+}
+
+ensureCacheTable().catch(console.error);
+
 router.post("/product/search", async (req, res) => {
   try {
     const body = SearchProductBody.parse(req.body);
     const { productName } = body;
+    const productKey = productName.trim().toLowerCase();
 
-    const systemPrompt = `You are a global trade and market intelligence expert. When given a product name, you research and return accurate, comprehensive market intelligence data including the latest news.
+    const cached = await pool.query(
+      "SELECT data FROM product_cache WHERE product_key = $1",
+      [productKey]
+    );
+
+    if (cached.rows.length > 0) {
+      console.log(`Cache hit: ${productKey}`);
+      res.json(cached.rows[0].data);
+      return;
+    }
+
+    const systemPrompt = `You are a global trade and market intelligence expert. When given a product name, you research and return accurate, comprehensive market intelligence data including the latest news and official reference sources.
 
 You must return a JSON object with this exact structure:
 {
@@ -42,6 +69,13 @@ You must return a JSON object with this exact structure:
       "source": "<name of a real publication or news outlet, e.g. Reuters, Bloomberg, Financial Times>",
       "date": "<approximate date or period, e.g. March 2025 or Q1 2025>"
     }
+  ],
+  "sources": [
+    {
+      "name": "<official organization or publication name>",
+      "url": "<full https URL to the relevant page or dataset>",
+      "description": "<one sentence on what trade data this source covers for this product>"
+    }
   ]
 }
 
@@ -54,6 +88,7 @@ Rules:
 - Always provide actual numeric values for the globalStats fields
 - Include exactly 4 headlines covering the most recent and impactful news for this product (supply chain shifts, price changes, new trade policies, major deals, production developments, etc.)
 - Headlines should reflect the most recent developments available in your knowledge, covering the period from 2024 to early 2026
+- Include 4-6 real, working official sources with direct URLs relevant to this specific product (e.g. UN Comtrade, World Bank, FAO, ITC Trade Map, US EIA, USDA, industry associations)
 - Return ONLY the JSON object, no markdown, no explanation`;
 
     const userPrompt = `Research and provide comprehensive market intelligence for: ${productName}`;
@@ -86,6 +121,14 @@ Rules:
     }
 
     const result = SearchProductResponse.parse(parsed);
+
+    await pool.query(
+      `INSERT INTO product_cache (product_key, data)
+       VALUES ($1, $2)
+       ON CONFLICT (product_key) DO UPDATE SET data = $2, updated_at = NOW()`,
+      [productKey, JSON.stringify(result)]
+    );
+
     res.json(result);
   } catch (err) {
     if (err instanceof Error && err.name === "ZodError") {

@@ -1,6 +1,8 @@
 import { Router, type IRouter } from "express";
 import { SearchProductBody, SearchProductResponse } from "@workspace/api-zod";
-import { openai } from "@workspace/integrations-openai-ai-server";
+import Groq from "groq-sdk";
+
+const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
 const router: IRouter = Router();
 
@@ -56,9 +58,9 @@ Rules:
 
     const userPrompt = `Research and provide comprehensive market intelligence for: ${productName}`;
 
-    const completion = await openai.chat.completions.create({
-      model: "gpt-5.2",
-      max_completion_tokens: 4096,
+    const completion = await groq.chat.completions.create({
+      model: "llama-3.3-70b-versatile",
+      max_tokens: 4096,
       messages: [
         { role: "system", content: systemPrompt },
         { role: "user", content: userPrompt },

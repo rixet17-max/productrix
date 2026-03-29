@@ -314,7 +314,7 @@ export default function Home() {
 
           {/* Footer note */}
           <section className="text-center text-xs text-muted-foreground border-t border-border/50 pt-8">
-            <p>ProductMatrix — Global Product Market Intelligence. Data sourced from international trade databases and AI-powered market research. For informational purposes only.</p>
+            <p>ProductMatrix — Global Product Market Intelligence · <a href="https://www.productrix.com" style={{color:"inherit"}}>www.productrix.com</a> · Data sourced from international trade databases and AI-powered market research. For informational purposes only.</p>
           </section>
 
         </main>

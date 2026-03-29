@@ -15,4 +15,5 @@ RUN pnpm --filter @workspace/api-server run build
 
 EXPOSE 8080
 
-CMD ["node", "artifacts/api-server/dist/index.cjs"]
+ENTRYPOINT ["node"]
+CMD ["artifacts/api-server/dist/index.cjs"]

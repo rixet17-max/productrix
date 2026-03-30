@@ -1,6 +1,8 @@
 FROM node:20-alpine
+RUN npm install -g pnpm@10
 WORKDIR /app
-COPY artifacts/api-server/dist/index.cjs ./index.cjs
+COPY . .
+RUN pnpm install --no-frozen-lockfile
+RUN pnpm --filter @workspace/api-server run build
 EXPOSE 8080
-ENTRYPOINT ["node"]
-CMD ["index.cjs"]
+CMD ["node", "artifacts/api-server/dist/index.cjs"]

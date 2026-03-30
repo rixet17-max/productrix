@@ -8,6 +8,7 @@ const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 const router: IRouter = Router();
 
 async function ensureCacheTable() {
+  if (!pool) return;
   await pool.query(`
     CREATE TABLE IF NOT EXISTS product_cache (
       id SERIAL PRIMARY KEY,
@@ -27,15 +28,16 @@ router.post("/product/search", async (req, res) => {
     const { productName } = body;
     const productKey = productName.trim().toLowerCase();
 
-    const cached = await pool.query(
-      "SELECT data FROM product_cache WHERE product_key = $1",
-      [productKey]
-    );
-
-    if (cached.rows.length > 0) {
-      console.log(`Cache hit: ${productKey}`);
-      res.json(cached.rows[0].data);
-      return;
+    if (pool) {
+      const cached = await pool.query(
+        "SELECT data FROM product_cache WHERE product_key = $1",
+        [productKey]
+      );
+      if (cached.rows.length > 0) {
+        console.log(`Cache hit: ${productKey}`);
+        res.json(cached.rows[0].data);
+        return;
+      }
     }
 
     const systemPrompt = `You are a global trade and market intelligence expert. When given a product name, you research and return accurate, comprehensive market intelligence data including the latest news and official reference sources.
@@ -122,12 +124,14 @@ Rules:
 
     const result = SearchProductResponse.parse(parsed);
 
-    await pool.query(
-      `INSERT INTO product_cache (product_key, data)
-       VALUES ($1, $2)
-       ON CONFLICT (product_key) DO UPDATE SET data = $2, updated_at = NOW()`,
-      [productKey, JSON.stringify(result)]
-    );
+    if (pool) {
+      await pool.query(
+        `INSERT INTO product_cache (product_key, data)
+         VALUES ($1, $2)
+         ON CONFLICT (product_key) DO UPDATE SET data = $2, updated_at = NOW()`,
+        [productKey, JSON.stringify(result)]
+      ).catch(console.error);
+    }
 
     res.json(result);
   } catch (err) {

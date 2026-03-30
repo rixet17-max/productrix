@@ -1,11 +1,5 @@
 [phases.setup]
 nixPkgs = ["nodejs_20"]
 
-[phases.install]
-cmds = ["npm install -g pnpm@10", "pnpm install --frozen-lockfile"]
-
-[phases.build]
-cmds = ["pnpm --filter @workspace/api-server run build"]
-
 [start]
-cmd = "node artifacts/api-server/dist/index.cjs"
+cmd = "npm install -g pnpm@10 && pnpm install && pnpm --filter @workspace/api-server run build && node artifacts/api-server/dist/index.cjs"

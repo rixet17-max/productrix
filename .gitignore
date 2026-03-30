@@ -2,6 +2,9 @@
 
 # compiled output
 dist
+# Keep api-server dist tracked so Railway can deploy without building
+!artifacts/api-server/dist/
+!artifacts/api-server/dist/index.cjs
 tmp
 out-tsc
 *.tsbuildinfo

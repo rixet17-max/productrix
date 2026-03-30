@@ -3,7 +3,11 @@ import { SearchProductBody, SearchProductResponse } from "@workspace/api-zod";
 import { pool } from "@workspace/db";
 import Groq from "groq-sdk";
 
-const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
+function getGroq() {
+  const apiKey = process.env.GROQ_API_KEY;
+  if (!apiKey) throw new Error("GROQ_API_KEY is not configured");
+  return new Groq({ apiKey });
+}
 
 const router: IRouter = Router();
 
@@ -95,7 +99,7 @@ Rules:
 
     const userPrompt = `Research and provide comprehensive market intelligence for: ${productName}`;
 
-    const completion = await groq.chat.completions.create({
+    const completion = await getGroq().chat.completions.create({
       model: "llama-3.3-70b-versatile",
       max_tokens: 4096,
       messages: [

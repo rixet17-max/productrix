@@ -259,22 +259,28 @@ export default function Home() {
                 </p>
               )}
               {!hasSearched && !installed && (
-                <div className="mt-5 flex flex-col items-center gap-2">
+                <div className="mt-5 flex flex-col items-center gap-3">
                   {installPrompt ? (
                     <button
                       onClick={handleInstall}
-                      className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-xl font-bold text-sm shadow-lg shadow-primary/30 hover:bg-primary/90 transition-all active:scale-95 animate-pulse"
+                      className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-xl font-bold text-sm shadow-lg shadow-primary/30 hover:bg-primary/90 transition-all active:scale-95"
                     >
                       <Download className="w-4 h-4" />
                       Instalar App gratis
                     </button>
                   ) : (
-                    <div className="inline-flex items-center gap-2 px-5 py-2.5 bg-card border border-border rounded-xl text-sm text-muted-foreground">
-                      <Download className="w-4 h-4 text-primary" />
-                      <span>
-                        <strong className="text-foreground">Instalar:</strong>{" "}
-                        Android: menú ⋮ → "Instalar app" · iPhone: compartir → "Añadir a inicio"
-                      </span>
+                    <div className="flex flex-col items-center gap-2 text-center">
+                      <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Instalar en tu celular</p>
+                      <div className="flex gap-3 flex-wrap justify-center">
+                        <div className="flex items-center gap-1.5 px-3 py-1.5 bg-card border border-border rounded-lg text-xs text-foreground">
+                          <span>🤖</span>
+                          <span>Android: menú <strong>⋮</strong> → <strong>"Instalar app"</strong></span>
+                        </div>
+                        <div className="flex items-center gap-1.5 px-3 py-1.5 bg-card border border-border rounded-lg text-xs text-foreground">
+                          <span>🍎</span>
+                          <span>iPhone: compartir <strong>↑</strong> → <strong>"Añadir a inicio"</strong></span>
+                        </div>
+                      </div>
                     </div>
                   )}
                 </div>

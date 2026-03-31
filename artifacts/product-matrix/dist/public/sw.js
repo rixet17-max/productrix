@@ -1,5 +1,5 @@
-const CACHE = "productmatrix-v1";
-const SHELL = ["/", "/manifest.json", "/favicon.svg"];
+const CACHE = "productmatrix-v3";
+const SHELL = ["/", "/manifest.json", "/icon-192.png", "/icon-512.png"];
 
 self.addEventListener("install", (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(SHELL)));

@@ -259,23 +259,14 @@ export default function Home() {
                 </p>
               )}
               {!hasSearched && !installed && (
-                <div className="mt-5 flex flex-col items-center gap-3">
-                  {installPrompt ? (
-                    <button
-                      onClick={handleInstall}
-                      className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-xl font-bold text-sm shadow-lg shadow-primary/30 hover:bg-primary/90 transition-all active:scale-95"
-                    >
-                      <Download className="w-4 h-4" />
-                      Instalar App gratis
-                    </button>
-                  ) : (
-                    <div className="mt-2 max-w-sm mx-auto rounded-xl border border-border bg-card p-4 text-left text-sm text-foreground">
-                      <p className="font-bold mb-2 text-center">📲 Cómo instalar en tu celular</p>
-                      <p className="mb-1"><span className="font-bold">Android:</span> Toca el menú <span className="font-mono font-bold">⋮</span> arriba a la derecha en Chrome → selecciona <span className="font-bold">"Instalar app"</span></p>
-                      <hr className="my-2 border-border" />
-                      <p><span className="font-bold">iPhone:</span> Toca el botón de compartir <span className="font-bold">↑</span> abajo en Safari → selecciona <span className="font-bold">"Añadir a pantalla de inicio"</span></p>
-                    </div>
-                  )}
+                <div className="mt-5">
+                  <button
+                    onClick={installPrompt ? handleInstall : () => alert("Android: menú ⋮ → \"Instalar app\"\niPhone: botón compartir ↑ → \"Añadir a inicio\"")}
+                    className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-xl font-bold text-sm shadow-lg shadow-primary/30 hover:bg-primary/90 transition-all active:scale-95"
+                  >
+                    <Download className="w-4 h-4" />
+                    Instalar App gratis
+                  </button>
                 </div>
               )}
               {!hasSearched && installed && (

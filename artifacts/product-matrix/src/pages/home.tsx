@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useSearchProduct } from "@workspace/api-client-react";
-import { Search, Factory, Truck, Ship, PackageOpen, Loader2, BarChart3, Box, DollarSign, Globe, Calendar, Newspaper, ExternalLink, FileDown, FileSpreadsheet, ChevronDown, BookOpen, Link } from "lucide-react";
+import { Search, Factory, Truck, Ship, PackageOpen, Loader2, BarChart3, Box, DollarSign, Globe, Calendar, Newspaper, ExternalLink, FileDown, FileSpreadsheet, ChevronDown, BookOpen, Link, Download } from "lucide-react";
 import { exportToPDF, exportToExcel } from "@/lib/export";
 import { cn } from "@/lib/utils";
 import { StatCard } from "@/components/ui/stat-card";
@@ -176,6 +176,26 @@ export default function Home() {
   const [query, setQuery] = useState("");
   const [hasSearched, setHasSearched] = useState(false);
   const searchMutation = useSearchProduct();
+  const [installPrompt, setInstallPrompt] = useState<Event | null>(null);
+  const [installed, setInstalled] = useState(false);
+
+  useEffect(() => {
+    const handler = (e: Event) => {
+      e.preventDefault();
+      setInstallPrompt(e);
+    };
+    window.addEventListener("beforeinstallprompt", handler);
+    window.addEventListener("appinstalled", () => setInstalled(true));
+    return () => window.removeEventListener("beforeinstallprompt", handler);
+  }, []);
+
+  const handleInstall = async () => {
+    if (!installPrompt) return;
+    (installPrompt as any).prompt();
+    const { outcome } = await (installPrompt as any).userChoice;
+    if (outcome === "accepted") setInstalled(true);
+    setInstallPrompt(null);
+  };
 
   const handleSearch = (e?: React.FormEvent) => {
     if (e) e.preventDefault();
@@ -237,6 +257,18 @@ export default function Home() {
                 <p className="text-lg text-muted-foreground max-w-xl mx-auto mt-4 leading-relaxed">
                   Global supply chain intelligence at your fingertips. Discover top producers, distributors, and trade movement instantly.
                 </p>
+              )}
+              {!hasSearched && installPrompt && !installed && (
+                <button
+                  onClick={handleInstall}
+                  className="mt-4 inline-flex items-center gap-2 px-5 py-2.5 bg-primary text-white rounded-xl font-semibold text-sm shadow-lg shadow-primary/30 hover:bg-primary/90 transition-all active:scale-95"
+                >
+                  <Download className="w-4 h-4" />
+                  Instalar App
+                </button>
+              )}
+              {!hasSearched && installed && (
+                <p className="mt-4 text-sm text-green-600 font-medium">✓ App instalada correctamente</p>
               )}
             </div>
           </div>

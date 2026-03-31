@@ -4,4 +4,4 @@ COPY artifacts/api-server/dist/index.cjs ./
 COPY artifacts/product-matrix/dist/public ./public
 ENV NODE_ENV=production
 CMD ["node", "index.cjs"]
-# rebuild trigger
+# rebuild 1774939610569

@@ -269,18 +269,11 @@ export default function Home() {
                       Instalar App gratis
                     </button>
                   ) : (
-                    <div className="flex flex-col items-center gap-2 text-center">
-                      <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Instalar en tu celular</p>
-                      <div className="flex gap-3 flex-wrap justify-center">
-                        <div className="flex items-center gap-1.5 px-3 py-1.5 bg-card border border-border rounded-lg text-xs text-foreground">
-                          <span>🤖</span>
-                          <span>Android: menú <strong>⋮</strong> → <strong>"Instalar app"</strong></span>
-                        </div>
-                        <div className="flex items-center gap-1.5 px-3 py-1.5 bg-card border border-border rounded-lg text-xs text-foreground">
-                          <span>🍎</span>
-                          <span>iPhone: compartir <strong>↑</strong> → <strong>"Añadir a inicio"</strong></span>
-                        </div>
-                      </div>
+                    <div className="mt-2 max-w-sm mx-auto rounded-xl border border-border bg-card p-4 text-left text-sm text-foreground">
+                      <p className="font-bold mb-2 text-center">📲 Cómo instalar en tu celular</p>
+                      <p className="mb-1"><span className="font-bold">Android:</span> Toca el menú <span className="font-mono font-bold">⋮</span> arriba a la derecha en Chrome → selecciona <span className="font-bold">"Instalar app"</span></p>
+                      <hr className="my-2 border-border" />
+                      <p><span className="font-bold">iPhone:</span> Toca el botón de compartir <span className="font-bold">↑</span> abajo en Safari → selecciona <span className="font-bold">"Añadir a pantalla de inicio"</span></p>
                     </div>
                   )}
                 </div>

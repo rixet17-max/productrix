@@ -261,7 +261,7 @@ export default function Home() {
               {!hasSearched && !installed && (
                 <div className="mt-5">
                   <button
-                    onClick={installPrompt ? handleInstall : () => alert("Android: menú ⋮ → \"Instalar app\"\niPhone: botón compartir ↑ → \"Añadir a inicio\"")}
+                    onClick={handleInstall}
                     className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-xl font-bold text-sm shadow-lg shadow-primary/30 hover:bg-primary/90 transition-all active:scale-95"
                   >
                     <Download className="w-4 h-4" />

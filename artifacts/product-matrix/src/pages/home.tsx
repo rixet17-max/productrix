@@ -258,7 +258,7 @@ export default function Home() {
                   Global supply chain intelligence at your fingertips. Discover top producers, distributors, and trade movement instantly.
                 </p>
               )}
-              {!hasSearched && !installed && (
+              {!hasSearched && installPrompt && !installed && (
                 <div className="mt-5">
                   <button
                     onClick={handleInstall}

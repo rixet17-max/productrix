@@ -3,10 +3,12 @@
   "short_name": "Productrix",
   "description": "Global market intelligence. Search any product instantly.",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
   "background_color": "#6366f1",
   "theme_color": "#6366f1",
   "orientation": "portrait-primary",
+  "prefer_related_applications": false,
   "icons": [
     {
       "src": "/icon-192.png",

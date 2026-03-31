@@ -258,17 +258,29 @@ export default function Home() {
                   Global supply chain intelligence at your fingertips. Discover top producers, distributors, and trade movement instantly.
                 </p>
               )}
-              {!hasSearched && installPrompt && !installed && (
-                <button
-                  onClick={handleInstall}
-                  className="mt-4 inline-flex items-center gap-2 px-5 py-2.5 bg-primary text-white rounded-xl font-semibold text-sm shadow-lg shadow-primary/30 hover:bg-primary/90 transition-all active:scale-95"
-                >
-                  <Download className="w-4 h-4" />
-                  Instalar App
-                </button>
+              {!hasSearched && !installed && (
+                <div className="mt-5 flex flex-col items-center gap-2">
+                  {installPrompt ? (
+                    <button
+                      onClick={handleInstall}
+                      className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-xl font-bold text-sm shadow-lg shadow-primary/30 hover:bg-primary/90 transition-all active:scale-95 animate-pulse"
+                    >
+                      <Download className="w-4 h-4" />
+                      Instalar App gratis
+                    </button>
+                  ) : (
+                    <div className="inline-flex items-center gap-2 px-5 py-2.5 bg-card border border-border rounded-xl text-sm text-muted-foreground">
+                      <Download className="w-4 h-4 text-primary" />
+                      <span>
+                        <strong className="text-foreground">Instalar:</strong>{" "}
+                        Android: menú ⋮ → "Instalar app" · iPhone: compartir → "Añadir a inicio"
+                      </span>
+                    </div>
+                  )}
+                </div>
               )}
               {!hasSearched && installed && (
-                <p className="mt-4 text-sm text-green-600 font-medium">✓ App instalada correctamente</p>
+                <p className="mt-4 text-sm text-green-600 font-semibold">✓ App instalada correctamente</p>
               )}
             </div>
           </div>

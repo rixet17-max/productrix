@@ -1,28 +1,41 @@
 {
-  "name": "Productrix",
-  "short_name": "Productrix",
-  "description": "Global market intelligence. Search any product instantly.",
-  "start_url": "/",
-  "scope": "/",
-  "display": "standalone",
-  "background_color": "#6366f1",
-  "theme_color": "#6366f1",
-  "orientation": "portrait-primary",
-  "prefer_related_applications": false,
-  "icons": [
-    {
-      "src": "/icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "/icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
-    }
-  ],
-  "categories": ["business", "productivity"],
-  "lang": "es"
-}
+    "name": "Productrix",
+    "short_name": "Productrix",
+    "description": "Global market intelligence. Search any product instantly.",
+    "start_url": "/",
+    "scope": "/",
+    "display": "standalone",
+    "background_color": "#6366f1",
+    "theme_color": "#6366f1",
+    "orientation": "portrait-primary",
+    "prefer_related_applications": false,
+    "icons": [
+      {
+        "src": "/icon-192.png",
+        "sizes": "192x192",
+        "type": "image/png",
+        "purpose": "any"
+      },
+      {
+        "src": "/icon-192.png",
+        "sizes": "192x192",
+        "type": "image/png",
+        "purpose": "maskable"
+      },
+      {
+        "src": "/icon-512.png",
+        "sizes": "512x512",
+        "type": "image/png",
+        "purpose": "any"
+      },
+      {
+        "src": "/icon-512.png",
+        "sizes": "512x512",
+        "type": "image/png",
+        "purpose": "maskable"
+      }
+    ],
+    "categories": ["business", "productivity"],
+    "lang": "es"
+  }
+  
